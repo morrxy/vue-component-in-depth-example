@@ -2,7 +2,7 @@
 
 `npm i`
 
-`npm i -g @vue/cli-service-global`
+`npm i -g @vue/cli @vue/cli-service-global`
 
 ## run example
 
