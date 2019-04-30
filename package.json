@@ -1,0 +1,40 @@
+{
+  "name": "vue-component-in-depth-example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "vue": "^2.6.10"
+  },
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "eslint-plugin-vue": "^5.2.2",
+    "husky": "^2.1.0",
+    "lint-staged": "^8.1.5",
+    "prettier": "^1.17.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{vue,js,html,json}": [
+      "prettier --write",
+      "git add"
+    ],
+    "*.js": [
+      "eslint",
+      "git add"
+    ],
+    "*.vue": [
+      "eslint",
+      "git add"
+    ]
+  }
+}
