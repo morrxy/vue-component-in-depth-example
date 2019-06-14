@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <script src="https://vuejs.org/js/vue.js"></script>
+  </head>
+
+  <body>
+    <div id="app"></div>
+
+    <script>
+      Vue.component('special-list', {
+        props: {
+          items: Array
+        },
+        render(h) {
+          return h(
+            'div',
+            this.items.map(item => {
+              return this.$scopedSlots.default(item);
+            })
+          );
+        }
+      });
+
+      new Vue({
+        el: '#app',
+        data() {
+          return {
+            pets: [
+              { name: 'alma', type: 'cat' },
+              { name: 'ring', type: 'cat' },
+              { name: 'winston', type: 'dog' }
+            ]
+          };
+        },
+        render(h) {
+          return h('special-list', {
+            props: {
+              items: this.pets
+            },
+            scopedSlots: {
+              default(pet) {
+                return h('div', `${pet.name} is a ${pet.type}`);
+              }
+            }
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

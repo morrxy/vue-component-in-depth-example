@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <script src="https://vuejs.org/js/vue.js"></script>
+  </head>
+
+  <body>
+    <div id="app"></div>
+
+    <script>
+      Vue.component('child', {
+        data() {
+          return {
+            text: 'child text'
+          };
+        },
+        render: function(createElement) {
+          return createElement(
+            'div',
+            {
+              class: ['child']
+            },
+            [
+              this.$scopedSlots.default({
+                text: this.text
+              })
+            ]
+          );
+        }
+      });
+
+      new Vue({
+        el: '#app',
+        data() {
+          return {
+            text: 'my text'
+          };
+        },
+        render: function(createElement) {
+          return createElement(
+            'div',
+            {
+              class: ['parent']
+            },
+            [
+              createElement('child', {
+                // 在数据对象中传递 `scopedSlots`
+                // 格式为 { name: props => VNode | Array<VNode> }
+                scopedSlots: {
+                  default: function(props) {
+                    console.log('props:', props);
+                    return createElement('span', props.text);
+                  }
+                }
+              })
+            ]
+          );
+        }
+      });
+    </script>
+  </body>
+</html>
