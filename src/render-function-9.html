@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <script src="https://vuejs.org/js/vue.js"></script>
+  </head>
+
+  <body>
+    <div id="app"></div>
+
+    <script>
+      Vue.component('base-layout', {
+        data() {
+          return {
+            headerText: 'child header text',
+            defaultText: 'child default text',
+            footerText: 'child footer text'
+          };
+        },
+
+        render(h) {
+          return h('div', { class: 'child-node' }, [
+            this.$scopedSlots.header({ text: this.headerText }),
+            this.$scopedSlots.default(this.defaultText),
+            this.$scopedSlots.footer({ text: this.footerText })
+          ]);
+        }
+      });
+
+      Vue.component('scoped-slots', {
+        name: 'ScopedSlots',
+        render(h) {
+          return h('div', { class: 'parent-node' }, [
+            this.$slots.default,
+            h('base-layout', {
+              scopedSlots: {
+                header: props => h('p', { style: { color: 'red' } }, [props.text]),
+                default: props => h('p', { style: { color: 'deeppink' } }, [props]),
+                footer: props => h('p', { style: { color: 'orange' } }, [props.text])
+              }
+            })
+          ]);
+        }
+      });
+
+      new Vue({
+        el: '#app',
+        render: function(h) {
+          return h('scoped-slots', ['parent content']);
+        }
+      });
+    </script>
+  </body>
+</html>
