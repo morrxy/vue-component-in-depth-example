@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="https://vuejs.org/js/vue.js"></script>
+  </head>
+
+  <body>
+    <div id="app">
+      <ttt plan="ccc">
+        <aaa></aaa>
+        <bbb slot="bbb" msg="slot-1"></bbb>
+        <p>default-1</p>
+        <bbb slot="bbb" msg="slot-2"></bbb>
+        <ccc slot="ccc"></ccc>
+        <p>default-2</p>
+      </ttt>
+    </div>
+
+    <script>
+      Vue.component('aaa', {
+        functional: true,
+        render: function(h, ctx) {
+          return h('div', ['aaa']);
+        }
+      });
+      Vue.component('bbb', {
+        functional: true,
+        render: function(h, ctx) {
+          return h('div', ['bbb:' + ctx.props.msg]);
+        }
+      });
+      Vue.component('ccc', {
+        functional: true,
+        render: function(h, ctx) {
+          return h('div', ['ccc']);
+        }
+      });
+      Vue.component('ttt', {
+        functional: true,
+        render: function(h, ctx) {
+          console.log(ctx.children);
+          console.log(ctx.slots());
+          var plan = ctx.props.plan;
+          var slots = ctx.slots();
+          var children;
+          if (plan == 'children') {
+            children = ctx.children;
+          } else if (plan == 'bbb') {
+            children = slots.bbb;
+          } else if (plan == 'ccc') {
+            children = slots.ccc;
+          } else {
+            children = slots.default;
+          }
+          return h('div', children);
+        }
+      });
+
+      var app = new Vue({}).$mount('#app');
+    </script>
+  </body>
+</html>

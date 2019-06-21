@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <script src="https://vuejs.org/js/vue.js"></script>
+  </head>
+
+  <body>
+    <div id="app"></div>
+
+    <script>
+      const EmptyList = {
+        render(h) {
+          return h('div', 'a empty list');
+        }
+      };
+
+      const TableList = {
+        render(h) {
+          return h('div', 'a table list');
+        }
+      };
+
+      const OrderedList = {
+        render(h) {
+          return h('div', 'a ordered list');
+        }
+      };
+
+      const UnorderedList = {
+        render(h) {
+          return h('div', 'a unordered list');
+        }
+      };
+
+      Vue.component('smart-list', {
+        functional: true,
+        props: {
+          items: {
+            type: Array,
+            required: true
+          },
+          isOrdered: Boolean
+        },
+        render(h, context) {
+          function appropriateListComponent() {
+            const items = context.props.items;
+
+            if (items.length === 0) return EmptyList;
+            if (typeof items[0] === 'object') return TableList;
+            if (context.props.isOrdered) return OrderedList;
+            return UnorderedList;
+          }
+
+          return h(appropriateListComponent(), context.data, context.children);
+        }
+      });
+
+      new Vue({
+        el: '#app',
+        data() {
+          return {
+            emptyItems: [],
+            tableItems: [{ name: 'a' }],
+            orderedItems: [1, 2, 3],
+            unorderedItems: ['a', 'b', 'c']
+          };
+        },
+        render: function(h) {
+          return h('div', [
+            h('smart-list', { props: { items: this.emptyItems } }),
+            h('smart-list', { props: { items: this.tableItems } }),
+            h('smart-list', { props: { items: this.orderedItems, isOrdered: true } }),
+            h('smart-list', { props: { items: this.unorderedItems } })
+          ]);
+        }
+      });
+    </script>
+  </body>
+</html>

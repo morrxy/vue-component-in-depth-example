@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <script src="https://vuejs.org/js/vue.js"></script>
+  </head>
+
+  <body>
+    <div id="app"></div>
+
+    <script>
+      Vue.component('my-functional-button', {
+        functional: true,
+        render(h, context) {
+          // 完全透传任何特性、事件监听器、子节点等。
+          return h('button', context.data, context.children);
+        }
+      });
+
+      new Vue({
+        el: '#app',
+        render: function(h) {
+          return h(
+            'my-functional-button',
+            {
+              attrs: {
+                id: 'myButton'
+              },
+              style: {
+                color: 'red'
+              },
+              class: ['btn btn-primary'],
+              on: {
+                click: function() {
+                  alert('clicked');
+                }
+              }
+            },
+            'my-functional-button'
+          );
+        }
+      });
+    </script>
+  </body>
+</html>
